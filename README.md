@@ -45,7 +45,6 @@ No external ML APIs used — fully custom NLP logic implemented from scratch.
 
 🚀 **Try the app live here:**  
 👉 [https://ai-resume-job-matcher.vercel.app
-](https://vercel.com/mrinal-mishra-s-projects/ai-resume-job-matcher)
 
 ## 🗂 Project Structure
 
