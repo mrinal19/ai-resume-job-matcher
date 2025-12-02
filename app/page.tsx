@@ -9,6 +9,12 @@ function labelClass(label: string) {
   return "text-rose-300 bg-rose-500/10 border-rose-500/40";
 }
 
+function barClass(label: string) {
+  if (label === "Strong Match") return "bg-emerald-500";
+  if (label === "Moderate Match") return "bg-amber-400";
+  return "bg-rose-500";
+}
+
 export default function HomePage() {
   const [job, setJob] = useState<Job>({
     id: "job-1",
@@ -226,7 +232,9 @@ export default function HomePage() {
               </span>
               .
             </p>
+            
           ) : (
+            
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm border-collapse">
                 <thead>
@@ -258,11 +266,12 @@ export default function HomePage() {
     {(m.score * 100).toFixed(1)}%
   </div>
   <div className="h-1.5 w-24 bg-slate-800 rounded-full overflow-hidden">
-    <div
-      className="h-full bg-emerald-500"
-      style={{ width: `${Math.min(m.score * 100, 100)}%` }}
-    />
-  </div>
+  <div
+    className={`h-full ${barClass(m.matchLabel)}`}
+    style={{ width: `${Math.min(m.score * 100, 100)}%` }}
+  />
+</div>
+
   <span
     className={
       "inline-flex mt-1 items-center rounded-full border px-2 py-0.5 text-[10px] font-medium " +
