@@ -15,6 +15,25 @@ function barClass(label: string) {
   return "bg-rose-500";
 }
 
+function getTopMissingSkills(matches: MatchResult[], limit = 5): string[] {
+  const freq: Record<string, number> = {};
+
+  matches.forEach((m) => {
+    m.missingSkills.forEach((skill) => {
+      // normalize a bit
+      const key = skill.trim().toLowerCase();
+      if (!key) return;
+      freq[key] = (freq[key] || 0) + 1;
+    });
+  });
+
+  return Object.entries(freq)
+    .sort((a, b) => b[1] - a[1]) // sort by frequency desc
+    .slice(0, limit)
+    .map(([skill]) => skill);
+}
+
+
 export default function HomePage() {
   const [job, setJob] = useState<Job>({
     id: "job-1",
@@ -223,6 +242,43 @@ export default function HomePage() {
               </span>
             )}
           </div>
+          {matches.length > 0 && (
+  <div className="flex flex-col gap-2 text-xs text-slate-300 mb-2">
+    <div className="flex items-center justify-between">
+      <span className="text-slate-400">
+        Candidates evaluated:{" "}
+        <span className="font-semibold text-slate-100">
+          {matches.length}
+        </span>
+      </span>
+      <span className="text-slate-400">
+        Best score:{" "}
+        <span className="font-semibold text-slate-100">
+          {(matches[0].score * 100).toFixed(1)}%
+        </span>
+      </span>
+    </div>
+
+    {getTopMissingSkills(matches).length > 0 && (
+      <div className="flex flex-col gap-1">
+        <span className="text-slate-400">
+          Top missing skills across all candidates:
+        </span>
+        <div className="flex flex-wrap gap-1.5">
+          {getTopMissingSkills(matches).map((skill) => (
+            <span
+              key={skill}
+              className="px-2 py-0.5 rounded-full bg-rose-500/10 text-rose-300 border border-rose-500/40"
+            >
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+)}
+
 
 
           {matches.length === 0 ? (
