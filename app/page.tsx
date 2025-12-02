@@ -223,6 +223,24 @@ export default function HomePage() {
               </span>
             )}
           </div>
+{matches.length > 0 && (
+  <div className="mb-3 rounded-xl border border-slate-800 bg-slate-900/80 px-3 py-2 text-xs text-slate-300">
+    <div className="font-semibold text-slate-100">
+      Hiring Insight
+    </div>
+    <div className="mt-1">
+      Best candidate:{" "}
+      <span className="font-medium">
+        {matches[0].candidateName}
+      </span>{" "}
+      with a score of{" "}
+      <span className="font-medium">
+        {(matches[0].score * 100).toFixed(1)}%
+      </span>
+      .
+    </div>
+  </div>
+)}
 
           {matches.length === 0 ? (
             <p className="text-sm text-slate-500">
