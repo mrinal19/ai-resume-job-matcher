@@ -223,7 +223,15 @@ export default function HomePage() {
               </span>
             )}
           </div>
-{matches.length > 0 && (
+
+
+          {matches.length === 0 ? (
+            <p className="text-sm text-slate-500">
+              No results yet. Add a job, add some candidates, then click{" "}
+              <span className="font-semibold text-slate-200">
+                Run Matching Engine
+              </span>
+              {matches.length > 0 && (
   <div className="mb-3 rounded-xl border border-slate-800 bg-slate-900/80 px-3 py-2 text-xs text-slate-300">
     <div className="font-semibold text-slate-100">
       Hiring Insight
@@ -240,14 +248,7 @@ export default function HomePage() {
       .
     </div>
   </div>
-)}
-
-          {matches.length === 0 ? (
-            <p className="text-sm text-slate-500">
-              No results yet. Add a job, add some candidates, then click{" "}
-              <span className="font-semibold text-slate-200">
-                Run Matching Engine
-              </span>
+              )}
               .
             </p>
             
