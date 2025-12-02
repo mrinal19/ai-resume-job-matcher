@@ -1,50 +1,33 @@
-# AI Resume–Job Matcher 🚀
+# AI Resume–Job Matcher
 
-A full-stack AI-powered web application that analyzes a job description and multiple candidate resumes, then ranks candidates based on semantic similarity and highlights overlapping and missing skills.
+A web app that analyzes a job description and multiple candidate resumes, then ranks candidates by match score and highlights overlapping skills and skill gaps.
 
-Built as a **deployable, production-ready demo** using modern web and NLP tools.
+Built with:
 
----
+- Next.js 16 (App Router)
+- TypeScript
+- Tailwind CSS
+- Custom TF-IDF + cosine similarity NLP engine (no external ML APIs)
 
-## 🔥 Features
+## Features
 
-- Paste a **job description**
-- Add multiple **candidate resumes**
-- Run an AI-powered **matching engine**
+- Paste a job description and candidate resumes.
+- Run the matching engine to compute similarity scores.
 - View:
-  - ✅ Ranked candidates
-  - ✅ Match percentage
-  - ✅ Overlapping skills
-  - ✅ Missing skills
-- One-click **“Load Sample Data”** button for instant demo
+  - Ranked candidates
+  - Match score (0–100%)
+  - Overlapping skills vs missing skills
+- "Load sample data" button for quick demo.
 
----
+## Tech Overview
 
-## 🧠 Matching Engine (How It Works)
+- `lib/types.ts` — shared TypeScript interfaces for Job, Candidate, MatchResult.
+- `lib/nlp.ts` — custom text preprocessing + TF-IDF + cosine similarity implementation.
+- `app/api/match/route.ts` — API endpoint that computes matches on the server.
+- `app/page.tsx` — main dashboard UI.
 
-- Text Cleaning & Tokenization
-- Feature Extraction using **TF-IDF**
-- Semantic Similarity using **Cosine Similarity**
-- Automated ranking of candidates
+## Running Locally
 
-No external ML APIs used — fully custom NLP logic implemented from scratch.
-
----
-
-## 🛠 Tech Stack
-
-- **Frontend:** Next.js 16, React, Tailwind CSS
-- **Backend:** Next.js API Routes (Serverless)
-- **Language:** TypeScript
-- **NLP:** Custom TF-IDF + Cosine Similarity
-- **Deployment:** Vercel
-
----
-
-## 🌍 Live Demo
-
-🚀 **Try the app live here:**  
-👉 [[https://ai-resume-job-matcher.vercel.app](https://ai-resume-job-matcher-bice.vercel.app/)
-
-## 🗂 Project Structure
-
+```bash
+npm install
+npm run dev
