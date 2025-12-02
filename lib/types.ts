@@ -16,4 +16,6 @@ export interface MatchResult {
   score: number;          // 0–1
   overlappingSkills: string[];
   missingSkills: string[];
+  matchLabel: "Strong Match" | "Moderate Match" | "Weak Match";
+  explanation: string;
 }

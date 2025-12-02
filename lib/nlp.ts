@@ -96,6 +96,40 @@ function cosineSimilarity(a: Vector, b: Vector): number {
   return dot / (Math.sqrt(normA) * Math.sqrt(normB));
 }
 
+function getMatchLabel(score: number): "Strong Match" | "Moderate Match" | "Weak Match" {
+  if (score >= 0.8) return "Strong Match";
+  if (score >= 0.6) return "Moderate Match";
+  return "Weak Match";
+}
+
+function buildExplanation(
+  label: "Strong Match" | "Moderate Match" | "Weak Match",
+  overlappingSkills: string[],
+  missingSkills: string[]
+): string {
+  const topOverlap = overlappingSkills.slice(0, 3);
+  const topMissing = missingSkills.slice(0, 3);
+
+  const overlapText =
+    topOverlap.length > 0
+      ? `overlap in ${topOverlap.join(", ")}`
+      : "very little direct skill overlap with the job requirements";
+
+  const missingText =
+    topMissing.length > 0
+      ? `key gaps around ${topMissing.join(", ")}`
+      : "no major skill gaps for the listed requirements";
+
+  if (label === "Strong Match") {
+    return `Strong match due to solid ${overlapText}, with only ${missingText}.`;
+  } else if (label === "Moderate Match") {
+    return `Moderate match with some ${overlapText}, but ${missingText}.`;
+  } else {
+    return `Weak match — the resume shows ${overlapText}, but there are ${missingText}.`;
+  }
+}
+
+
 export function computeMatches(job: Job, candidates: Candidate[]): MatchResult[] {
   const { jobVec, candidateVecs } = buildTfIdfVectors(job, candidates);
   const jobSkills = new Set(extractSkills(job.description));
@@ -112,13 +146,19 @@ export function computeMatches(job: Job, candidates: Candidate[]): MatchResult[]
       else missingSkills.push(s);
     });
 
+        const label = getMatchLabel(sim);
+    const explanation = buildExplanation(label, overlappingSkills, missingSkills);
+
     return {
       candidateId: c.id,
       candidateName: c.name,
       score: sim,
       overlappingSkills,
       missingSkills,
+      matchLabel: label,
+      explanation,
     };
+
   });
 
   results.sort((a, b) => b.score - a.score);

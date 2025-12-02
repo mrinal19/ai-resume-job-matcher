@@ -3,6 +3,12 @@
 import { useState } from "react";
 import { Candidate, Job, MatchResult } from "@/lib/types";
 
+function labelClass(label: string) {
+  if (label === "Strong Match") return "text-emerald-300 bg-emerald-500/10 border-emerald-500/40";
+  if (label === "Moderate Match") return "text-amber-300 bg-amber-500/10 border-amber-500/40";
+  return "text-rose-300 bg-rose-500/10 border-rose-500/40";
+}
+
 export default function HomePage() {
   const [job, setJob] = useState<Job>({
     id: "job-1",
@@ -230,6 +236,8 @@ export default function HomePage() {
                     <th className="text-left py-2 pr-4">Match Score</th>
                     <th className="text-left py-2 pr-4">Overlapping Skills</th>
                     <th className="text-left py-2 pr-4">Missing Skills</th>
+                    <th className="text-left py-2 pr-4">Explanation</th>
+
                   </tr>
                 </thead>
                 <tbody>
@@ -245,17 +253,26 @@ export default function HomePage() {
                           ID: {m.candidateId}
                         </div>
                       </td>
-                      <td className="py-2 pr-4 align-top">
-                        <div className="font-semibold">
-                          {(m.score * 100).toFixed(1)}%
-                        </div>
-                        <div className="h-1.5 w-24 bg-slate-800 rounded-full mt-1 overflow-hidden">
-                          <div
-                            className="h-full bg-emerald-500"
-                            style={{ width: `${Math.min(m.score * 100, 100)}%` }}
-                          />
-                        </div>
-                      </td>
+                      <td className="py-2 pr-4 align-top space-y-1">
+  <div className="font-semibold">
+    {(m.score * 100).toFixed(1)}%
+  </div>
+  <div className="h-1.5 w-24 bg-slate-800 rounded-full overflow-hidden">
+    <div
+      className="h-full bg-emerald-500"
+      style={{ width: `${Math.min(m.score * 100, 100)}%` }}
+    />
+  </div>
+  <span
+    className={
+      "inline-flex mt-1 items-center rounded-full border px-2 py-0.5 text-[10px] font-medium " +
+      labelClass(m.matchLabel)
+    }
+  >
+    {m.matchLabel}
+  </span>
+</td>
+
                       <td className="py-2 pr-4 align-top">
                         <div className="flex flex-wrap gap-1">
                           {m.overlappingSkills.slice(0, 10).map((s) => (
@@ -286,6 +303,12 @@ export default function HomePage() {
                           )}
                         </div>
                       </td>
+                      <td className="py-2 pr-4 align-top">
+  <p className="text-xs text-slate-400 leading-snug max-w-xs">
+    {m.explanation}
+  </p>
+</td>
+
                     </tr>
                   ))}
                 </tbody>
